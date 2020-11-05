@@ -3,7 +3,6 @@ const dotenv = require("dotenv");
 const connectDB = require("./dbConnection");
 var path = require("path");
 const app = express();
-app.use(bodyParser.json());
 
 dotenv.config();
 connectDB();
