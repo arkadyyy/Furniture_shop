@@ -1,52 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./App.css";
+import HomeScreen from "./screens/HomeScreen/HomeScreen";
+import LivingRoom from "./screens/LivingRoom/LivingRoom";
 
-const App = () => {
-  const [passwords, setPasswords] = useState([]);
-
-  const getPasswords = () => {
-    console.log("getPasswords");
-    // Get the passwords and store them in state
-    fetch("/api/passwords")
-      .then((res) => res.json())
-      .then((passwords) => setPasswords(passwords));
-  };
-
-  // Fetch passwords after first mount
-  useEffect(getPasswords, []);
-
+import Kitchen from "./screens/Kitchen/KitchenScreen";
+import Bedroom from "./screens/Bedroom/BedroomScreen";
+import Cart from "./screens/Cart/Cart";
+import ProductScreen from "./screens/ProductScreen/ProductScreen";
+import ManagerScreen from "./screens/ManagerScreen/ManagerScreen";
+import CartSummary from "./screens/CartSummary/CartSummary";
+import SignIn from "./screens/SignIn/SignIn";
+function App() {
   return (
-    <div className="App">
-      {/* Render the passwords if we have them */}
-      {passwords.length ? (
-        <div>
-          <h1>5 Passwords.</h1>
-          <ul className="passwords">
-            {/*
-                Generally it's bad to use "index" as a key.
-                It's ok for this example because there will always
-                be the same number of passwords, and they never
-                change positions in the array.
-              */}
-            {passwords.map((password, index) => (
-              <li key={index}>{password}</li>
-            ))}
-          </ul>
-          <button className="more" onClick={getPasswords}>
-            Get More
-          </button>
-        </div>
-      ) : (
-        // Render a helpful message otherwise
-        <div>
-          <h1>No passwords :(</h1>
-          <button className="more" onClick={getPasswords}>
-            Try Again?
-          </button>
-        </div>
-      )}
-    </div>
+    <Router>
+      <Route path='/' exact component={HomeScreen} />
+      <Route path='/living_room' exact component={LivingRoom} />
+      <Route path='/kitchen' exact component={Kitchen} />
+      <Route path='/bedroom' exact component={Bedroom} />
+      <Route path='/cart' exact component={Cart} />
+      <Route path='/productscreen/:name' exact component={ProductScreen} />
+      <Route path='/managerscreen' exact component={ManagerScreen} />
+      <Route path='/cartsummary' exact component={CartSummary} />
+      <Route path='/signin' exact component={SignIn} />
+    </Router>
   );
-};
+}
 
 export default App;

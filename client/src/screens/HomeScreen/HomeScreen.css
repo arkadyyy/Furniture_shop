@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Rouge+Script&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
+
+* {
+  font-family: "Roboto", sans-serif;
+}
+a {
+  cursor: pointer;
+  margin: 0 3rem;
+}
+
+.navbarLogo {
+  font-family: "Rouge Script", cursive;
+}
+
+.heroSection {
+  height: 100vh;
+}
+.heroSectionBackground {
+  height: 100vh;
+  background: url("../../images/curology-6CJg-fOTYs4-unsplash.jpg");
+  background-size: cover;
+  filter: brightness(70%);
+}
+.heroSectionText {
+  border: 2px white solid;
+  color: white;
+  text-align: left;
+  padding: 6rem 25rem;
+  position: absolute;
+  z-index: 100;
+  top: 20%;
+  left: 15%;
+}
+.heroSectionText h1 {
+  margin: 0 -20rem;
+
+  text-align: left;
+}
+
+.newIn {
+  height: 55vh;
+}
+
+.insparation {
+  height: 85vh;
+  margin-top: 15rem;
+  text-align: left;
+}
