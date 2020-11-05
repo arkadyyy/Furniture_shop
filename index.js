@@ -13,40 +13,17 @@ const app = express();
 app.use(bodyParser.json());
 
 dotenv.config();
-
-const PREFIX = "/api";
-const url = process.env.MONGO_URI || "mongodb://localhost:27017";
-
-app.use(express.static(path.join(__dirname, "/client/build")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "/client/build/index.html"));
-});
-
-// app.get("/", (req, res) => {
-//   res.send("this works !");
-// });
-
 connectDB();
-// Product.insertMany(products);
-// console.log(products);
-//socket.io config
+const PREFIX = "/api";
 
-const http = require("http");
-const server = http.createServer(app);
-const io = socketIo(server);
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, "client/build")));
 
-io.on("connection", (socket) => {
-  console.log("New client connected");
-  console.log(socket.id);
-  socket.emit("login", "login just happend !");
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-  });
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
-// app.get("/", (req, res) => {
-//   res.sendFile(path.join(__dirname, "/client/build/index.html"));
-// });
 
 app.get(`${PREFIX}/products`, async (req, res) => {
   const products = await Product.find({});
@@ -105,13 +82,6 @@ app.delete(`${PREFIX}/removeproduct/:id`, async (req, res) => {
   }
 });
 
-// app.delete("/deleteProduct", async (req, res) => {
-//   const product = Product.findOneAndDelete({});
-//   product.save();
-// });
-
-/////////////////////////
-
 //create user
 
 app.post(`${PREFIX}/signin`, async (req, res) => {
@@ -159,7 +129,6 @@ app.post(`${PREFIX}/login`, async (req, res) => {
   } else {
     res.send({ loginSucces: false, isAdmin: false });
   }
-  io.sockets.emit("login", "login just happend !");
 });
 
 //update user
@@ -178,9 +147,6 @@ app.post(`${PREFIX}/updateuser`, async (req, res) => {
   );
   console.log("updated user:", user);
   res.send("ok");
-  // user.email = req.body.email;
-  // user.adress = req.body.adress;
-  // user.save();
 });
 
 //set cart
@@ -207,11 +173,10 @@ app.post(`${PREFIX}/setcart`, async (req, res) => {
 
   const updatedCart = await Cart.find({ userID: userID });
 
-  // console.log(user[0]._id);
-  // req.body.cartItems.map((item) => console.log(item));
   res.send(updatedCart[0]);
 });
 
-server.listen(process.env.PORT || 8000, () => {
-  console.log(`server listening on port ${process.env.PORT}`);
-});
+const port = process.env.PORT || 5000;
+app.listen(port);
+
+console.log(`Password generator listening on ${port}`);
