@@ -18,13 +18,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const NavBar = ({ history }) => {
-  useEffect(() => {
-    const socket = socketIOClient("http://localhost:7000/");
-    socket.on("login", (data) => {
-      console.log("login success !");
-    });
-  }, []);
-
   const [show, setShow] = useState(false);
   //user settings state
   const [modalShow, setModalShow] = useState(false);
