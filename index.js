@@ -1,4 +1,7 @@
 const express = require("express");
+const Product = require("./models/ProductModel");
+const User = require("./models/UserModel");
+const Cart = require("./models/CartModel");
 const dotenv = require("dotenv");
 const connectDB = require("./dbConnection");
 var path = require("path");
