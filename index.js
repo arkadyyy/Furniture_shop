@@ -1,13 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const connectDB = require("./dbConnection");
-const Product = require("./models/ProductModel");
-const User = require("./models/UserModel");
-const Cart = require("./models/CartModel");
-const products = require("./data/products");
-const users = require("./data/users");
-const bodyParser = require("body-parser");
-const socketIo = require("socket.io");
 var path = require("path");
 const app = express();
 app.use(bodyParser.json());
