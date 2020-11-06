@@ -21,7 +21,9 @@ app.get("*", (req, res) => {
 });
 
 app.get(`${PREFIX}/products`, async (req, res) => {
-  const products = await Product.find({});
+  const products = await User.find({});
+
+  console.log(products);
   res.send(products);
 
   res.status(200).json("server works !");
