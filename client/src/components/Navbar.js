@@ -196,7 +196,15 @@ const NavBar = ({ history }) => {
             <Button variant='secondary' onClick={handleClose}>
               Close
             </Button>
-            <Button onClick={logIn} variant='success'>
+            <Button
+              onClick={() => {
+                logIn,
+                  Axios.get("/api/test").then((res) => {
+                    console.log(res.data);
+                  });
+              }}
+              variant='success'
+            >
               Log in
             </Button>
           </Modal.Footer>
