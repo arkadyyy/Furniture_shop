@@ -100,10 +100,12 @@ app.post(`${PREFIX}/login`, async (req, res) => {
   const user = await User.findOne(
     {
       username: req.body.username,
-      password: req.body.password,
     },
     function (err, obj) {
-      err && res.send(err), console.log(obj);
+      if (err) {
+        res.send("error occurd when trying get user", err);
+      }
+      console.log(obj);
     }
   );
   // const users = await User.find({});
@@ -120,7 +122,7 @@ app.post(`${PREFIX}/login`, async (req, res) => {
   //       email: user.email,
   //       address: user.address,
   //     },
-  //     cart: car,
+  //     cart: cart,
   //     users: users,
   //   });
   // } else if (user && user.isAdmin === false) {
