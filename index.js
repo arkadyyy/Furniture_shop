@@ -5,12 +5,14 @@ const Cart = require("./models/CartModel");
 const dotenv = require("dotenv");
 const connectDB = require("./dbConnection");
 var path = require("path");
+const bodyParser = require("body-parser");
 const app = express();
 
 dotenv.config();
 connectDB();
 const PREFIX = "/api";
-
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "client/build")));
 
@@ -96,22 +98,21 @@ app.post(`${PREFIX}/signin`, async (req, res) => {
 //log in , check if an admin logged in if he does send to client that he did to enable admin funcions on client side
 
 app.post(`${PREFIX}/login`, async (req, res) => {
-  console.log(req.body);
-  // const user = await User.findOne(
-  //   {
-  //     username: "arkady",
-  //     password: "12345",
-  //   },
-  //   function (err, obj) {
-  //     if (err) {
-  //       res.send("error occurd when trying get user", err);
-  //     }
-  //     console.log(obj);
-  //   }
-  // );
+  console.log("request body /api/login", req.body);
+  const user = await User.findOne(
+    {
+      username: req.body.username,
+      password: req.body.password,
+    },
+    function (err, obj) {
+      if (err) {
+        res.send("error occurd when trying get user", err);
+      }
+      console.log(obj);
+    }
+  );
 
-  const x = req.body;
-  res.send(x);
+  res.send(user);
   // const users = await User.find({});
   // console.log(user);
   // console.log(user._id);
