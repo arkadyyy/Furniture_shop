@@ -18,10 +18,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const NavBar = ({ history }) => {
-  useEffect(() => {
+  const test222 = () => {
     Axios.get("/api/test").then((res) => {
       console.log(res.data);
     });
+  };
+  useEffect(() => {
+    test222();
   }, []);
   const [show, setShow] = useState(false);
   //user settings state
@@ -196,15 +199,7 @@ const NavBar = ({ history }) => {
             <Button variant='secondary' onClick={handleClose}>
               Close
             </Button>
-            <Button
-              onClick={() => {
-                logIn,
-                  Axios.get("/api/test").then((res) => {
-                    console.log(res.data);
-                  });
-              }}
-              variant='success'
-            >
+            <Button onClick={(logIn, test222)} variant='success'>
               Log in
             </Button>
           </Modal.Footer>
