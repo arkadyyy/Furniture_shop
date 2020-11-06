@@ -3,7 +3,7 @@ const url = process.env.MONGO_URI || "mongodb://localhost:27017";
 
 const connectDB = async () => {
   try {
-    const connection = mongoose.connect(`${url}`, {
+    mongoose.connect(`${url}`, {
       useUnifiedTopology: true,
       useNewUrlParser: true,
       useCreateIndex: true,
