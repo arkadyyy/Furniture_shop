@@ -199,7 +199,7 @@ const NavBar = ({ history }) => {
             <Button variant='secondary' onClick={handleClose}>
               Close
             </Button>
-            <Button onClick={(logIn, test222)} variant='success'>
+            <Button onClick={logIn} variant='success'>
               Log in
             </Button>
           </Modal.Footer>

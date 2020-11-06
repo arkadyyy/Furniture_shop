@@ -96,43 +96,44 @@ app.post(`${PREFIX}/signin`, async (req, res) => {
 //log in , check if an admin logged in if he does send to client that he did to enable admin funcions on client side
 
 app.post(`${PREFIX}/login`, async (req, res) => {
-  console.log(req.body);
-  const user = await User.findOne({
-    username: req.body.username,
-    password: req.body.password,
-  });
-  const users = await User.find({});
-  console.log(user);
-  console.log(user._id);
-  const cart = await Cart.findOne({ userID: user._id });
+  // console.log(req.body);
+  // const user = await User.findOne({
+  //   username: req.body.username,
+  //   password: req.body.password,
+  // });
+  // const users = await User.find({});
+  // console.log(user);
+  // console.log(user._id);
+  // const cart = await Cart.findOne({ userID: user._id });
 
-  if (user && user.isAdmin === true) {
-    res.send({
-      loginSucces: true,
-      isAdmin: true,
-      userData: {
-        username: user.username,
-        email: user.email,
-        address: user.address,
-      },
-      cart: car,
-      users: users,
-    });
-  } else if (user && user.isAdmin === false) {
-    res.send({
-      loginSucces: true,
-      isAdmin: false,
-      userData: {
-        username: user.username,
-        email: user.email,
-        address: user.address,
-      },
-      cart: cart,
-      users: users,
-    });
-  } else {
-    res.send({ loginSucces: false, isAdmin: false, users: users });
-  }
+  // if (user && user.isAdmin === true) {
+  //   res.send({
+  //     loginSucces: true,
+  //     isAdmin: true,
+  //     userData: {
+  //       username: user.username,
+  //       email: user.email,
+  //       address: user.address,
+  //     },
+  //     cart: car,
+  //     users: users,
+  //   });
+  // } else if (user && user.isAdmin === false) {
+  //   res.send({
+  //     loginSucces: true,
+  //     isAdmin: false,
+  //     userData: {
+  //       username: user.username,
+  //       email: user.email,
+  //       address: user.address,
+  //     },
+  //     cart: cart,
+  //     users: users,
+  //   });
+  // } else {
+  //   res.send({ loginSucces: false, isAdmin: false, users: users });
+  // }
+  res.send("the api address works");
 });
 
 //update user
