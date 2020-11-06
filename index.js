@@ -96,11 +96,11 @@ app.post(`${PREFIX}/signin`, async (req, res) => {
 //log in , check if an admin logged in if he does send to client that he did to enable admin funcions on client side
 
 app.post(`${PREFIX}/login`, async (req, res) => {
-  // console.log(req.body);
-  // const user = await User.findOne({
-  //   username: req.body.username,
-  //   password: req.body.password,
-  // });
+  console.log(req.body);
+  const user = await User.findOne({
+    username: req.body.username,
+    password: req.body.password,
+  });
   // const users = await User.find({});
   // console.log(user);
   // console.log(user._id);
@@ -133,7 +133,7 @@ app.post(`${PREFIX}/login`, async (req, res) => {
   // } else {
   //   res.send({ loginSucces: false, isAdmin: false, users: users });
   // }
-  res.send("the api address works");
+  res.send(user);
 });
 
 //update user
