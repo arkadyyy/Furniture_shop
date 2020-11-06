@@ -97,7 +97,7 @@ app.post(`${PREFIX}/signin`, async (req, res) => {
 
 app.post(`${PREFIX}/login`, async (req, res) => {
   console.log(req.body);
-  const user = await User.findOne({
+  const user = await User.find({
     username: req.body.username,
     password: req.body.password,
   });
