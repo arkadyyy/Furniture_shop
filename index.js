@@ -58,7 +58,7 @@ app.post(`${PREFIX}/newProduct`, async (req, res) => {
 app.put(`${PREFIX}/updateproduct`, async (req, res) => {
   try {
     await Product.deleteMany();
-    Product.insertMany(req.body.products);
+    await Product.insertMany(req.body.products);
 
     console.log("BODY: ", req.body.products);
     console.log("products have been updated succsesfully");
@@ -109,38 +109,39 @@ app.post(`${PREFIX}/login`, async (req, res) => {
       console.log(obj);
     }
   );
-  const users = await User.find({});
-  console.log(user);
-  console.log(user._id);
-  const cart = await Cart.findOne({ userID: user._id });
+  res.send(req.body);
+  // const users = await User.find({});
+  // console.log(user);
+  // console.log(user._id);
+  // const cart = await Cart.findOne({ userID: user._id });
 
-  if (user && user.isAdmin === true) {
-    res.send({
-      loginSucces: true,
-      isAdmin: true,
-      userData: {
-        username: user.username,
-        email: user.email,
-        address: user.address,
-      },
-      cart: cart,
-      users: users,
-    });
-  } else if (user && user.isAdmin === false) {
-    res.send({
-      loginSucces: true,
-      isAdmin: false,
-      userData: {
-        username: user.username,
-        email: user.email,
-        address: user.address,
-      },
-      cart: cart,
-      users: users,
-    });
-  } else {
-    res.send({ loginSucces: false, isAdmin: false, users: users });
-  }
+  // if (user && user.isAdmin === true) {
+  //   res.send({
+  //     loginSucces: true,
+  //     isAdmin: true,
+  //     userData: {
+  //       username: user.username,
+  //       email: user.email,
+  //       address: user.address,
+  //     },
+  //     cart: cart,
+  //     users: users,
+  //   });
+  // } else if (user && user.isAdmin === false) {
+  //   res.send({
+  //     loginSucces: true,
+  //     isAdmin: false,
+  //     userData: {
+  //       username: user.username,
+  //       email: user.email,
+  //       address: user.address,
+  //     },
+  //     cart: cart,
+  //     users: users,
+  //   });
+  // } else {
+  //   res.send({ loginSucces: false, isAdmin: false, users: users });
+  // }
 });
 
 //update user
