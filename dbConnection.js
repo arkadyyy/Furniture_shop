@@ -1,15 +1,13 @@
 const mongoose = require("mongoose");
+const url = process.env.MONGO_URI || "mongodb://localhost:27017";
 
 const connectDB = async () => {
   try {
-    const connection = mongoose.connect(
-      "mongodb+srv://arkady:arkady656@cluster0.pm8b5.mongodb.net/furniture-shop",
-      {
-        useUnifiedTopology: true,
-        useNewUrlParser: true,
-        useCreateIndex: true,
-      }
-    );
+    const connection = mongoose.connect(`${url}`, {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+      useCreateIndex: true,
+    });
     console.log(`mongoDB connected `);
   } catch (error) {
     console.error(`error : ${error.message}`);

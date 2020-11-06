@@ -17,11 +17,12 @@ app.use(express.static(path.join(__dirname, "client/build")));
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/client/build/index.html"));
+  // res.sendFile(path.join(__dirname + "/client/build/index.html"));
+  res.send("test123");
 });
 
 app.get(`${PREFIX}/products`, async (req, res) => {
-  const products = await User.find({});
+  const products = await Product.find({});
 
   console.log(products);
   res.send(products);
