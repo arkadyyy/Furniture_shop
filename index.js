@@ -97,20 +97,20 @@ app.post(`${PREFIX}/signin`, async (req, res) => {
 
 app.post(`${PREFIX}/login`, async (req, res) => {
   console.log(req.body);
-  const user = await User.findOne(
-    {
-      username: "arkady",
-      password: "12345",
-    },
-    function (err, obj) {
-      if (err) {
-        res.send("error occurd when trying get user", err);
-      }
-      console.log(obj);
-    }
-  );
+  // const user = await User.findOne(
+  //   {
+  //     username: "arkady",
+  //     password: "12345",
+  //   },
+  //   function (err, obj) {
+  //     if (err) {
+  //       res.send("error occurd when trying get user", err);
+  //     }
+  //     console.log(obj);
+  //   }
+  // );
 
-  const x = JSON.stringify(req.body);
+  const x = req.body;
   res.send(x);
   // const users = await User.find({});
   // console.log(user);
