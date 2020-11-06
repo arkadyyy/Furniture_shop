@@ -109,7 +109,9 @@ app.post(`${PREFIX}/login`, async (req, res) => {
       console.log(obj);
     }
   );
-  res.send("test");
+
+  const x = req.body;
+  res.send(x);
   // const users = await User.find({});
   // console.log(user);
   // console.log(user._id);
