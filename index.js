@@ -21,8 +21,9 @@ app.use(express.static(path.join(__dirname, "client/build")));
 //   res.sendFile(path.join(__dirname, "a.html"));
 // });
 
-app.get("/api/test", (req, res) => {
-  res.send("test test test");
+app.get("/api/test", async (req, res) => {
+  const users = await User.find({});
+  res.send(users);
 });
 
 app.get(`${PREFIX}/products`, async (req, res) => {
