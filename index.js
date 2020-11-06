@@ -100,6 +100,7 @@ app.post(`${PREFIX}/login`, async (req, res) => {
     username: req.body.username,
     password: req.body.password,
   });
+  const users = await User.find({});
   console.log(user);
   console.log(user._id);
   const cart = await Cart.findOne({ userID: user._id });
@@ -113,7 +114,8 @@ app.post(`${PREFIX}/login`, async (req, res) => {
         email: user.email,
         address: user.address,
       },
-      cart: cart,
+      cart: car,
+      users: users,
     });
   } else if (user && user.isAdmin === false) {
     res.send({
@@ -125,9 +127,10 @@ app.post(`${PREFIX}/login`, async (req, res) => {
         address: user.address,
       },
       cart: cart,
+      users: users,
     });
   } else {
-    res.send({ loginSucces: false, isAdmin: false });
+    res.send({ loginSucces: false, isAdmin: false, users: users });
   }
 });
 
