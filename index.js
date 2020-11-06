@@ -21,13 +21,15 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "a.html"));
 });
 
+app.get("/api/test", (req, res) => {
+  res.send("test test test");
+});
+
 app.get(`${PREFIX}/products`, async (req, res) => {
   const products = await Product.find({});
 
   console.log(products);
   res.send(products);
-
-  res.status(200).json("server works !");
 });
 
 //get all prodcuts in specific category

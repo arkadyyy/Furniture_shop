@@ -18,6 +18,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const NavBar = ({ history }) => {
+  useEffect(() => {
+    Axios.get("/api/test").then((res) => {
+      console.log(res.data);
+    });
+  }, []);
   const [show, setShow] = useState(false);
   //user settings state
   const [modalShow, setModalShow] = useState(false);
