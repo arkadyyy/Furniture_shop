@@ -37,10 +37,11 @@ const NavBar = ({ history }) => {
   let username = useSelector((state) => state.LoginReducer.userData.username);
   let cartItems = useSelector((state) => state.cartReducer.cartItems);
   const logIn = (e) => {
-    e.preventDefault();
     const username = document.querySelector("#username").value;
     const password = document.querySelector("#password").value;
-
+    console.log("login click is working");
+    console.log(username);
+    console.log(password);
     Axios.post("/api/login", {
       username: username,
       password: password,
