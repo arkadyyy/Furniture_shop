@@ -46,8 +46,8 @@ const NavBar = ({ history }) => {
     console.log(username);
     console.log(password);
     Axios.post("/api/login", {
-      username: "qwqwqw",
-      password: "09090909",
+      username: username,
+      password: password,
     }).then((res) => {
       console.log(res);
       if (res.data.isAdmin && res.data.loginSucces) {
