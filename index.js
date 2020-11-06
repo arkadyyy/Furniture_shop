@@ -109,39 +109,38 @@ app.post(`${PREFIX}/login`, async (req, res) => {
       console.log(obj);
     }
   );
-  // const users = await User.find({});
-  // console.log(user);
-  // console.log(user._id);
-  // const cart = await Cart.findOne({ userID: user._id });
+  const users = await User.find({});
+  console.log(user);
+  console.log(user._id);
+  const cart = await Cart.findOne({ userID: user._id });
 
-  // if (user && user.isAdmin === true) {
-  //   res.send({
-  //     loginSucces: true,
-  //     isAdmin: true,
-  //     userData: {
-  //       username: user.username,
-  //       email: user.email,
-  //       address: user.address,
-  //     },
-  //     cart: cart,
-  //     users: users,
-  //   });
-  // } else if (user && user.isAdmin === false) {
-  //   res.send({
-  //     loginSucces: true,
-  //     isAdmin: false,
-  //     userData: {
-  //       username: user.username,
-  //       email: user.email,
-  //       address: user.address,
-  //     },
-  //     cart: cart,
-  //     users: users,
-  //   });
-  // } else {
-  //   res.send({ loginSucces: false, isAdmin: false, users: users });
-  // }
-  res.send(user);
+  if (user && user.isAdmin === true) {
+    res.send({
+      loginSucces: true,
+      isAdmin: true,
+      userData: {
+        username: user.username,
+        email: user.email,
+        address: user.address,
+      },
+      cart: cart,
+      users: users,
+    });
+  } else if (user && user.isAdmin === false) {
+    res.send({
+      loginSucces: true,
+      isAdmin: false,
+      userData: {
+        username: user.username,
+        email: user.email,
+        address: user.address,
+      },
+      cart: cart,
+      users: users,
+    });
+  } else {
+    res.send({ loginSucces: false, isAdmin: false, users: users });
+  }
 });
 
 //update user
