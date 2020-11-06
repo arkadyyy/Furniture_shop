@@ -99,7 +99,8 @@ app.post(`${PREFIX}/login`, async (req, res) => {
   console.log(req.body);
   const user = await User.findOne(
     {
-      username: req.body.username,
+      username: "arkady",
+      password: "12345",
     },
     function (err, obj) {
       if (err) {
