@@ -51,71 +51,77 @@ const HomeScreen = () => {
   return (
     <div>
       <NavBar />
-      <div className='heroSection'>
-        <div className='heroSectionText'>
-          <h1>Best furniture,</h1>
-          <h1>Best prices</h1>
+      <Container>
+        <div className='heroSection'>
+          <div className='heroSectionText'>
+            <h1>Best furniture,</h1>
+            <h1>Best prices</h1>
+          </div>
+          <div className='heroSectionBackground'></div>
         </div>
-        <div className='heroSectionBackground'></div>
-      </div>
 
-      <div className='newIn'>
-        <div style={{ display: "flex", textAlign: "bottom", padding: "5rem" }}>
-          <h1>New In !</h1>
-          <button
-            style={{
-              border: "none",
-              margin: "0 4rem",
-              background: "transparent",
-            }}
+        <div className='newIn'>
+          <div
+            style={{ display: "flex", textAlign: "bottom", padding: "5rem" }}
           >
-            see all
-          </button>
+            <h1>New In !</h1>
+            <button
+              style={{
+                border: "none",
+                margin: "0 4rem",
+                background: "transparent",
+              }}
+            >
+              see all
+            </button>
+          </div>
+          <Row style={{ position: "relative" }} className='mx-5 my-auto'>
+            {products.map((product) => (
+              <Col>
+                <h1>test</h1>
+              </Col>
+            ))}
+          </Row>
         </div>
-        <Row style={{ position: "relative" }} className='mx-5 my-auto'>
-          {products.map((product) => (
+
+        <div className='insparation'>
+          <div
+            style={{ display: "flex", textAlign: "bottom", padding: "5rem" }}
+          >
+            <h1>Some Insparation</h1>
+            <button
+              style={{
+                border: "none",
+                margin: "0 4rem",
+                background: "transparent",
+              }}
+            >
+              see all
+            </button>
+          </div>
+
+          <Row>
+            <Container>
+              <Col className='m-2'>
+                <Image
+                  src='../../images/eduard-militaru-dtuM342uTmc-unsplash.jpg'
+                  fluid
+                  width='555px'
+                />
+              </Col>
+            </Container>
             <Col>
-              <h1>test</h1>
+              <h2 style={{ textAlign: "left" }}>
+                <strong>outdoor insparation</strong>
+              </h2>
             </Col>
-          ))}
-        </Row>
-      </div>
-
-      <div className='insparation'>
-        <div style={{ display: "flex", textAlign: "bottom", padding: "5rem" }}>
-          <h1>Some Insparation</h1>
-          <button
-            style={{
-              border: "none",
-              margin: "0 4rem",
-              background: "transparent",
-            }}
-          >
-            see all
-          </button>
+          </Row>
         </div>
 
-        <Row>
-          <Container>
-            <Col className='m-2'>
-              <Image
-                src='../../images/eduard-militaru-dtuM342uTmc-unsplash.jpg'
-                fluid
-                width='555px'
-              />
-            </Col>
-          </Container>
-          <Col>
-            <h2 style={{ textAlign: "left" }}>
-              <strong>outdoor insparation</strong>
-            </h2>
-          </Col>
-        </Row>
-      </div>
-
-      <footer style={{ height: "40vh", backgroundColor: "black" }}>
-        <h6>this is the footer </h6>
-      </footer>
+        <footer style={{ height: "40vh", backgroundColor: "black" }}>
+          <h6>this is the footer </h6>
+        </footer>
+      </Container>
     </div>
   );
 };
