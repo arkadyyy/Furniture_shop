@@ -16,6 +16,7 @@ import {
 import products from "../../products";
 import ProductSmall from "../../components/ProductSmall";
 import NavBar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import Pic from "../../images/clock.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { ProductsRequest } from "../../actions/ProductAction";
@@ -51,15 +52,15 @@ const HomeScreen = () => {
   return (
     <div>
       <NavBar />
-      <Container>
-        <div className='heroSection'>
-          <div className='heroSectionText'>
-            <h1>Best furniture,</h1>
-            <h1>Best prices</h1>
-          </div>
-          <div className='heroSectionBackground'></div>
-        </div>
 
+      <div className='heroSection'>
+        <div className='heroSectionText'>
+          <h1>Best furniture,</h1>
+          <h1>Best prices</h1>
+        </div>
+        <div className='heroSectionBackground'></div>
+      </div>
+      <Container>
         <div className='newIn'>
           <div
             style={{ display: "flex", textAlign: "bottom", padding: "5rem" }}
@@ -101,7 +102,7 @@ const HomeScreen = () => {
           </div>
 
           <Row>
-            <Container>
+            <Container className='px-3'>
               <Col className='m-2'>
                 <Image
                   src='../../images/eduard-militaru-dtuM342uTmc-unsplash.jpg'
@@ -117,11 +118,8 @@ const HomeScreen = () => {
             </Col>
           </Row>
         </div>
-
-        <footer style={{ height: "40vh", backgroundColor: "black" }}>
-          <h6>this is the footer </h6>
-        </footer>
       </Container>
+      <Footer />
     </div>
   );
 };

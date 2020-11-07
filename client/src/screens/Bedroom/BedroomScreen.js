@@ -18,6 +18,7 @@ import {
 import products from "../../products";
 import ProductSmall from "../../components/ProductSmall";
 import NavBar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import "../LivingRoom/LivingRoom.css";
 import axios from "axios";
 import { productReducer } from "../../reducers/ProductReducer";
@@ -51,16 +52,18 @@ const Bedroom = () => {
         </div>
         <div className='heroSectionBackground'></div>
       </div>
-
-      <Row style={{ position: "relative" }} className='mx-5 my-auto'>
-        {BedroomProducts.map((product) => (
-          <Col>
-            <Row>
-              <ProductSmall product={product} />
-            </Row>
-          </Col>
-        ))}
-      </Row>
+      <Container>
+        <Row style={{ position: "relative" }} className='mx-5 my-auto'>
+          {BedroomProducts.map((product) => (
+            <Col>
+              <Row>
+                <ProductSmall product={product} />
+              </Row>
+            </Col>
+          ))}
+        </Row>
+      </Container>
+      <Footer />
     </div>
   );
 };

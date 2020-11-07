@@ -18,6 +18,7 @@ import {
 import products from "../../products";
 import ProductSmall from "../../components/ProductSmall";
 import NavBar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import "../LivingRoom/LivingRoom.css";
 import axios from "axios";
 
@@ -50,16 +51,18 @@ const Kitchen = () => {
         </div>
         <div className='heroSectionBackground'></div>
       </div>
-
-      <Row style={{ position: "relative" }} className='mx-5 my-auto'>
-        {KitchenProducts.map((product) => (
-          <Col>
-            <Row>
-              <ProductSmall product={product} />
-            </Row>
-          </Col>
-        ))}
-      </Row>
+      <Container>
+        <Row style={{ position: "relative" }} className='mx-5 my-auto'>
+          {KitchenProducts.map((product) => (
+            <Col>
+              <Row>
+                <ProductSmall product={product} />
+              </Row>
+            </Col>
+          ))}
+        </Row>
+      </Container>
+      <Footer />
     </div>
   );
 };
