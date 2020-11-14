@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 const connectDB = require("./dbConnection");
 var path = require("path");
 const bodyParser = require("body-parser");
+const socketIo = require("socket.io");
 const app = express();
 
 dotenv.config();
@@ -13,6 +14,20 @@ connectDB();
 const PREFIX = "/api";
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+const http = require("http");
+const server = http.createServer(app);
+const io = socketIo(server);
+
+io.on("connection", (socket) => {
+  console.log("New client connected");
+  console.log(socket.id);
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+});
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "client/build")));
 
@@ -22,11 +37,6 @@ app.use(express.static(path.join(__dirname, "client/build")));
 //   // res.sendFile(path.join(__dirname + "/client/build/index.html"));
 //   res.sendFile(path.join(__dirname, "a.html"));
 // });
-
-app.get("/api/test", async (req, res) => {
-  const users = await User.find({});
-  res.send(users);
-});
 
 app.get(`${PREFIX}/products`, async (req, res) => {
   const products = await Product.find({});
@@ -69,6 +79,31 @@ app.put(`${PREFIX}/updateproduct`, async (req, res) => {
   } catch {
     res.status(500).send("update product failed");
   }
+});
+
+// products purchase
+
+app.put(`${PREFIX}/purchase`, async (req, res) => {
+  console.log("product purchase click : ", req.body);
+  req.body.cartItems.forEach(async (product) => {
+    console.log(product.quantity);
+    console.log(product.product.countInStock);
+    if (product.product.countInStock - product.quantity >= 0) {
+      await Product.findOneAndUpdate(
+        { name: product.product.name },
+        {
+          countInStock: product.product.countInStock - product.quantity,
+        },
+        {
+          new: true,
+        }
+      );
+    } else {
+      res.send({ purchaseSuccess: false, productName: product.product.name });
+    }
+  });
+  io.sockets.emit("products_updated");
+  res.send(true);
 });
 
 //delete product
