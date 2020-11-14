@@ -31,7 +31,7 @@ const Kitchen = () => {
     );
   }, []);
   return (
-    <div>
+    <div style={{ overflow: "hidden" }}>
       <NavBar />
       <div className='heroSection'>
         <div className='heroSectionText'>

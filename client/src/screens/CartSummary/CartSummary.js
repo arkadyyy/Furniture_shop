@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import NavBar from "../../components/Navbar";
 import {
   Container,
@@ -8,15 +8,43 @@ import {
   Form,
   Image,
   ListGroup,
+  Spinner,
 } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
+import { ProductsRequest } from "../../actions/ProductAction";
+import { PurchaseCart } from "../../actions/CartActions";
+import Axios from "axios";
 const CartSummary = () => {
+  const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cartReducer.cartItems);
   const userData = useSelector((state) => state.LoginReducer.userData);
+
+  const updateProducts = () => {
+    Axios.put("api/purchase", { cartItems, username: userData.username }).then(
+      (res) => {
+        console.log(res);
+      }
+    );
+  };
+  const wrapperFunction = () => {
+    updateProducts();
+    dispatch(ProductsRequest());
+
+    dispatch(PurchaseCart());
+  };
+
+  const [purchased, setpurchased] = useState(false);
+
+  const showSpinner = () => {
+    setpurchased(true);
+    setTimeout(() => {
+      setpurchased(false);
+    }, 2000);
+  };
   return (
-    <>
+    <div style={{ overflow: "hidden" }}>
       <NavBar />
-      <Container style={{ marginTop: "7%" }}>
+      <Container style={{ marginTop: "6rem" }}>
         <Row>
           <Col sm={8}>
             <h1>Cart summary</h1>
@@ -37,6 +65,10 @@ const CartSummary = () => {
                   </ListGroup.Item>
                 ))}
               </ListGroup>
+            ) : purchased ? (
+              <Spinner animation='border' role='status'>
+                <span className='sr-only'>Loading...</span>
+              </Spinner>
             ) : (
               <h6>your cart is empty</h6>
             )}
@@ -50,13 +82,20 @@ const CartSummary = () => {
               <h3>{userData.email}</h3>
               <h3></h3>
               <footer>
-                <Button variant='danger'>Purchese</Button>
+                <Button
+                  onClick={() => {
+                    return wrapperFunction(), showSpinner();
+                  }}
+                  variant='danger'
+                >
+                  Purchese
+                </Button>
               </footer>
             </Form>
           </Col>
         </Row>
       </Container>
-    </>
+    </div>
   );
 };
 

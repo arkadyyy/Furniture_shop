@@ -7,19 +7,14 @@
   background-size: cover;
   filter: brightness(70%);
 }
-.heroSectionText h1,
-p {
-  margin: 0.75rem -20rem;
 
-  text-align: left;
-}
-.inputHeroSearch {
+/* .inputHeroSearch {
   margin: 0.75rem -20rem;
   display: block;
 }
 .inputHeroSearch input {
   margin: 0 0.2rem;
-}
+} */
 label {
   display: block;
 }

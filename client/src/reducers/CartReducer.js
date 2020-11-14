@@ -33,6 +33,11 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
         ...state,
         cartItems: action.payload,
       };
+    case "CART_PURCHASE":
+      return {
+        ...state,
+        cartItems: action.payload,
+      };
 
     default:
       return state;

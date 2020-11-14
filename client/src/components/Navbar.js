@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Redirect, withRouter } from "react-router-dom";
 import { UserSettings } from "../screens/UserSettings.js/UserSettings";
 import { SetExistingCart } from "../actions/CartActions";
+import "./Navbar.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -99,60 +100,99 @@ const NavBar = ({ history }) => {
 
   return (
     <>
-      <Navbar fixed='top' bg='dark' variant='dark'>
+      <Navbar collapseOnSelect expand='lg' fixed='top' bg='dark' variant='dark'>
         <Link style={{ textDecoration: "none" }} to='/'>
-          <Navbar.Brand className='navbarLogo'>maynooth furniture</Navbar.Brand>
+          <Navbar.Brand className='navbarLogo navbarLink'>
+            maynooth furniture
+          </Navbar.Brand>
         </Link>
-        <Nav inline className='mr-auto'>
-          <Link
-            style={{ color: "white", textDecoration: "none" }}
-            to='/living_room'
-          >
-            Living room
-          </Link>
-
-          <Link
-            style={{ color: "white", textDecoration: "none" }}
-            to='/kitchen'
-          >
-            Kitchen
-          </Link>
-          <Link
-            style={{ color: "white", textDecoration: "none" }}
-            to='/bedroom'
-          >
-            Bedroom
-          </Link>
-          <Link style={{ color: "white", textDecoration: "none" }} to='/cart'>
-            Cart
-          </Link>
-          {isAdmin && (
+        <Navbar.Toggle aria-controls='responsive-navbar-nav' />
+        <Navbar.Collapse id='responsive-navbar-nav'>
+          <Nav inline className='mr-auto'>
             <Link
               style={{ color: "white", textDecoration: "none" }}
-              to='/managerscreen'
+              to='/living_room'
+              className='navbarLink'
             >
-              manage shop
+              Living room
             </Link>
-          )}
-        </Nav>
 
-        <Form inline>
+            <Link
+              style={{ color: "white", textDecoration: "none" }}
+              to='/kitchen'
+              className='navbarLink'
+            >
+              Kitchen
+            </Link>
+            <Link
+              style={{ color: "white", textDecoration: "none" }}
+              to='/bedroom'
+              className='navbarLink'
+            >
+              Bedroom
+            </Link>
+            <Link
+              className='navbarLink'
+              style={{ color: "white", textDecoration: "none" }}
+              to='/cart'
+            >
+              Cart
+            </Link>
+            {isAdmin && (
+              <Link
+                className='navbarLink'
+                style={{ color: "white", textDecoration: "none" }}
+                to='/managerscreen'
+              >
+                manage shop
+              </Link>
+            )}
+          </Nav>
+
+          {/* <Form inline> */}
           {userLogged ||
             (isAdmin && (
-              <span style={{ color: "white" }}>{`Hello ${username}`}</span>
+              <span
+                className='navbarLink'
+                style={{ color: "white", display: "block" }}
+              >{`Hello ${username}`}</span>
             ))}
+
           {userLogged && (
-            <span style={{ color: "white" }}>{`Hello ${username}`}</span>
+            <span
+              className='navbarLink'
+              style={{
+                color: "white",
+                pointerEvents: "none",
+                display: "inline-block",
+              }}
+            >{`Hello ${username}`}</span>
           )}
           {userLogged && (
-            <Button variant='light' onClick={() => setModalShow(true)}>
+            <Button
+              className='navbarLink'
+              style={{
+                backgroundColor: "transparent",
+                color: "white",
+                display: "block",
+                float: "right",
+              }}
+              // variant='light'
+              onClick={() => setModalShow(true)}
+            >
               <FontAwesomeIcon icon={faCog} />
             </Button>
           )}
 
           {userLogged || isAdmin ? (
             <Button
-              variant='light'
+              style={{
+                backgroundColor: "transparent",
+                color: "white",
+                display: "block",
+                float: "right",
+              }}
+              // variant='light'
               onClick={() => {
                 dispatch({ type: "LOG_OUT_USER" });
                 history.push("/");
@@ -163,7 +203,14 @@ const NavBar = ({ history }) => {
             </Button>
           ) : (
             <Button
-              variant='light'
+              className='navbarLink'
+              style={{
+                backgroundColor: "transparent",
+                color: "white",
+                display: "block",
+                float: "right",
+              }}
+              // variant='light'
               className='mx-3'
               variant='light'
               onClick={handleShow}
@@ -171,39 +218,39 @@ const NavBar = ({ history }) => {
               <FontAwesomeIcon icon={faSignInAlt} />
             </Button>
           )}
-        </Form>
 
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Log in</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <input
-              style={{ display: "block", margin: "1rem" }}
-              placeholder='username'
-              id='username'
-            ></input>
-            <input
-              style={{ display: "block", margin: "1rem" }}
-              placeholder='password'
-              id='password'
-            ></input>
-            <h8 style={{ display: "block", margin: "1rem" }}>
-              Dont have a user yet ?
-            </h8>
-            <Button onClick={() => history.push("/signin")} variant='light'>
-              Sign in
-            </Button>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant='secondary' onClick={handleClose}>
-              Close
-            </Button>
-            <Button onClick={logIn} variant='success'>
-              Log in
-            </Button>
-          </Modal.Footer>
-        </Modal>
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Log in</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <input
+                style={{ display: "block", margin: "1rem" }}
+                placeholder='username'
+                id='username'
+              ></input>
+              <input
+                style={{ display: "block", margin: "1rem" }}
+                placeholder='password'
+                id='password'
+              ></input>
+              <h8 style={{ display: "block", margin: "1rem" }}>
+                Dont have a user yet ?
+              </h8>
+              <Button onClick={() => history.push("/signin")} variant='light'>
+                Sign in
+              </Button>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant='secondary' onClick={handleClose}>
+                Close
+              </Button>
+              <Button onClick={logIn} variant='success'>
+                Log in
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </Navbar.Collapse>
       </Navbar>
       <UserSettings show={modalShow} onHide={() => setModalShow(false)} />
     </>

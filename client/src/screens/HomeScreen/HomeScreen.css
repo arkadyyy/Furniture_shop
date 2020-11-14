@@ -3,10 +3,11 @@
 
 * {
   font-family: "Roboto", sans-serif;
+  box-sizing: border-box;
+  margin: 0;
 }
 a {
   cursor: pointer;
-  margin: 0 3rem;
 }
 
 .navbarLogo {
@@ -21,29 +22,28 @@ a {
   background: url("../../images/curology-6CJg-fOTYs4-unsplash.jpg");
   background-size: cover;
   filter: brightness(70%);
+  width: 100%;
+  height: auto;
 }
 .heroSectionText {
   border: 2px white solid;
   color: white;
   text-align: left;
-  padding: 6rem 25rem;
+  padding: 3% 17%;
+  overflow: hidden;
+
   position: absolute;
-  z-index: 100;
-  top: 20%;
+  top: 30%;
   left: 15%;
-}
-.heroSectionText h1 {
-  margin: 0 -20rem;
-
-  text-align: left;
+  z-index: 100;
 }
 
-.newIn {
+/* .newIn {
   height: 55vh;
-}
+} */
 
 .insparation {
   height: 85vh;
-  margin-top: 15rem;
+  margin-top: 8rem;
   text-align: left;
 }

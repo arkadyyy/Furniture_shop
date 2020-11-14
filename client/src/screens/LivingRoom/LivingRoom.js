@@ -35,8 +35,9 @@ const LivingRoom = () => {
   }, [dispatch]);
 
   return (
-    <div>
+    <div style={{ overflow: "hidden" }}>
       <NavBar />
+
       <div className='heroSection'>
         <div className='heroSectionText'>
           <h1>Living Room</h1>

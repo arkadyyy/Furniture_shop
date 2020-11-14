@@ -1,37 +1,43 @@
 const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const connectDB = require("./dbConnection");
 const Product = require("./models/ProductModel");
 const User = require("./models/UserModel");
 const Cart = require("./models/CartModel");
-const dotenv = require("dotenv");
-const connectDB = require("./dbConnection");
-var path = require("path");
+const products = require("./data/products");
+const users = require("./data/users");
 const bodyParser = require("body-parser");
+const socketIo = require("socket.io");
 const app = express();
-
-dotenv.config();
-connectDB();
-const PREFIX = "/api";
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, "client/build")));
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+dotenv.config();
 
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
-// app.get("*", (req, res) => {
-//   // res.sendFile(path.join(__dirname + "/client/build/index.html"));
-//   res.sendFile(path.join(__dirname, "a.html"));
-// });
+const PREFIX = "/api";
+// app.use("/", express.static(path.join(__dirname, "/src")));
+// app.use("/", express.static(path.join(build)));
 
-app.get("/api/test", async (req, res) => {
-  const users = await User.find({});
-  res.send(users);
+connectDB();
+// Product.insertMany(products);
+// console.log(products);
+//socket.io config
+
+const http = require("http");
+const server = http.createServer(app);
+const io = socketIo(server);
+
+io.on("connection", (socket) => {
+  console.log("New client connected");
+  console.log(socket.id);
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
 });
 
 app.get(`${PREFIX}/products`, async (req, res) => {
   const products = await Product.find({});
-
-  console.log("products :", products);
   res.send(products);
 });
 
@@ -60,15 +66,49 @@ app.post(`${PREFIX}/newProduct`, async (req, res) => {
 app.put(`${PREFIX}/updateproduct`, async (req, res) => {
   try {
     await Product.deleteMany();
-    await Product.insertMany(req.body.products);
+    Product.insertMany(req.body.products);
 
     console.log("BODY: ", req.body.products);
     console.log("products have been updated succsesfully");
-
+    io.emit("products_updated");
     res.send(req.body);
   } catch {
     res.status(500).send("update product failed");
   }
+});
+
+// products purchase
+
+app.put(`${PREFIX}/purchase`, async (req, res) => {
+  console.log("product purchase click : ", req.body);
+  req.body.cartItems.forEach(async (product) => {
+    console.log(product.quantity);
+    console.log(product.product.countInStock);
+    if (product.product.countInStock - product.quantity >= 0) {
+      await Product.findOneAndUpdate(
+        { name: product.product.name },
+        {
+          countInStock: product.product.countInStock - product.quantity,
+        },
+        {
+          new: true,
+        }
+      );
+      // let user = await User.findOne({ username: req.body.username });
+      // console.log(user);
+      // await Cart.findOneAndDelete({ userID: user._id }, function (err, docs) {
+      //   if (err) {
+      //     console.log(err);
+      //   } else {
+      //     console.log("Deleted cart : ", docs);
+      //   }
+      // });
+    } else {
+      res.send({ purchaseSuccess: false, productName: product.product.name });
+    }
+  });
+  io.emit("products_updated");
+  res.send(true);
 });
 
 //delete product
@@ -85,6 +125,13 @@ app.delete(`${PREFIX}/removeproduct/:id`, async (req, res) => {
   }
 });
 
+// app.delete("/deleteProduct", async (req, res) => {
+//   const product = Product.findOneAndDelete({});
+//   product.save();
+// });
+
+/////////////////////////
+
 //create user
 
 app.post(`${PREFIX}/signin`, async (req, res) => {
@@ -98,22 +145,16 @@ app.post(`${PREFIX}/signin`, async (req, res) => {
 //log in , check if an admin logged in if he does send to client that he did to enable admin funcions on client side
 
 app.post(`${PREFIX}/login`, async (req, res) => {
-  console.log("request body /api/login", req.body);
-  const user = await User.findOne(
-    {
-      username: req.body.username,
-      password: req.body.password,
-    },
-    function (err, obj) {
-      if (err) {
-        res.send("error occurd when trying get user", err);
-      }
-      console.log(obj);
-    }
-  );
+  console.log(req.body);
+  const user = await User.findOne({
+    username: req.body.username,
+    password: req.body.password,
+  });
+  console.log(user);
+  console.log(user._id);
 
   const cart = await Cart.findOne({ userID: user._id });
-
+  console.log("i have found this cart for logged", cart);
   if (user && user.isAdmin === true) {
     res.send({
       loginSucces: true,
@@ -137,8 +178,9 @@ app.post(`${PREFIX}/login`, async (req, res) => {
       cart: cart,
     });
   } else {
-    res.send({ loginSucces: false, isAdmin: false, users: users });
+    res.send({ loginSucces: false, isAdmin: false });
   }
+  io.sockets.emit("login", "login just happend !");
 });
 
 //update user
@@ -157,6 +199,9 @@ app.post(`${PREFIX}/updateuser`, async (req, res) => {
   );
   console.log("updated user:", user);
   res.send("ok");
+  // user.email = req.body.email;
+  // user.adress = req.body.adress;
+  // user.save();
 });
 
 //set cart
@@ -183,10 +228,11 @@ app.post(`${PREFIX}/setcart`, async (req, res) => {
 
   const updatedCart = await Cart.find({ userID: userID });
 
+  // console.log(user[0]._id);
+  // req.body.cartItems.map((item) => console.log(item));
   res.send(updatedCart[0]);
 });
 
-const port = process.env.PORT || 5000;
-app.listen(port);
-
-console.log(`Password generator listening on ${port}`);
+server.listen(process.env.PORT || 7000, () => {
+  console.log(`server listening on port ${process.env.PORT}`);
+});

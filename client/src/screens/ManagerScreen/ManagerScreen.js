@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Navbar from "../../components/Navbar";
 import { Table, FormControl, Form, Button, Modal } from "react-bootstrap";
 import "../ManagerScreen/ManagerScreen.css";
 import Axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { ProductsRequest } from "../../actions/ProductAction";
 
 const ManagerScreen = () => {
@@ -21,9 +21,9 @@ const ManagerScreen = () => {
   };
 
   const removeProduct = (_id) => {
-    Axios.delete(`/api/removeproduct/${_id}`).then((res) => {
+    Axios.delete(`/api/removeproduct/${_id}`).then(async (res) => {
       console.log(res);
-      dispatch({ type: "PRODUCT_REMOVED", payload: res.data });
+      await dispatch({ type: "PRODUCT_REMOVED", payload: res.data });
     });
     // dispatch(ProductsRequest());
   };
@@ -40,18 +40,38 @@ const ManagerScreen = () => {
   const [editable, seteditable] = useState(true);
   const [productsState, setproductsState] = useState(products);
   const [lgShow, setLgShow] = useState(false);
+  const [search, setsearch] = useState([]);
+
+  useEffect(() => {
+    console.log(search);
+  }, [search]);
 
   return (
-    <>
+    <div>
       <Navbar />
 
       <h1 style={{ padding: "5rem 0" }} className='mx-3'>
         manager screen{" "}
       </h1>
       <Form inline className='mb-3 px-3'>
-        <FormControl type='text' placeholder='Search' className='mr-sm-2 ' />
-        <Button variant='outline-info'>Search</Button>
-        <Button onClick={() => setLgShow(true)} variant='outline-info'>
+        <FormControl
+          type='text'
+          placeholder='Search'
+          className='mr-sm-2 '
+          onChange={(e) =>
+            setsearch(
+              products.filter((product) =>
+                product.name.includes(e.target.value)
+              )
+            )
+          }
+        />
+
+        <Button
+          style={{ margin: "0 0.7rem " }}
+          onClick={() => setLgShow(true)}
+          variant='outline-info'
+        >
           Add Product
         </Button>
         <Button
@@ -76,108 +96,223 @@ const ManagerScreen = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product, index) => (
-            <tr>
-              <td>
-                <FormControl
-                  type='text'
-                  defaultValue={product.name}
-                  readOnly={editable}
-                  className='mr-sm-2 '
-                  id={`name${index}`}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "PRODUCTS_UPDATED",
+          {search.length <= 0
+            ? products.map((product, index) => (
+                <tr>
+                  <td>
+                    <FormControl
+                      type='text'
+                      defaultValue={product.name}
+                      readOnly={editable}
+                      className='mr-sm-2 '
+                      id={`name${index}`}
+                      onChange={(e) => {
+                        dispatch({
+                          type: "PRODUCTS_UPDATED",
 
-                      payload: {
-                        index,
-                        product: {
-                          ...product,
-                          name: e.target.value,
-                        },
-                      },
-                    });
-                  }}
-                />{" "}
-              </td>
-              <td>
-                <FormControl
-                  type='text'
-                  defaultValue={product.category}
-                  readOnly={editable}
-                  className='mr-sm-2 '
-                  id={`category${index}`}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "PRODUCTS_UPDATED",
+                          payload: {
+                            index,
+                            product: {
+                              ...product,
+                              name: e.target.value,
+                            },
+                          },
+                        });
+                      }}
+                    />
+                  </td>
+                  <td>
+                    <Form>
+                      <Form.Group>
+                        <Form.Control
+                          as='select'
+                          defaultValue={product.category}
+                          readOnly={editable}
+                          className='mr-sm-2 '
+                          onChange={(e) => {
+                            dispatch({
+                              type: "PRODUCTS_UPDATED",
 
-                      payload: {
-                        index,
-                        product: {
-                          ...product,
-                          category: e.target.value,
-                        },
-                      },
-                    });
-                  }}
-                />
-              </td>
-              <td>
-                <FormControl
-                  type='text'
-                  defaultValue={product.price}
-                  readOnly={editable}
-                  className='mr-sm-2 '
-                  id={`price${index}`}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "PRODUCTS_UPDATED",
+                              payload: {
+                                index,
+                                product: {
+                                  ...product,
+                                  category: e.target.value,
+                                },
+                              },
+                            });
+                          }}
+                        >
+                          <option>living_room</option>
+                          <option>kitchen</option>
+                          <option>bedroom</option>
+                        </Form.Control>
+                      </Form.Group>
+                    </Form>
+                  </td>
+                  <td>
+                    <FormControl
+                      type='text'
+                      Value={product.price}
+                      readOnly={editable}
+                      className='mr-sm-2 '
+                      id={`price${index}`}
+                      onChange={(e) => {
+                        dispatch({
+                          type: "PRODUCTS_UPDATED",
 
-                      payload: {
-                        index,
-                        product: {
-                          ...product,
-                          price: e.target.value,
-                        },
-                      },
-                    });
-                  }}
-                />
-              </td>
-              <td>
-                <FormControl
-                  type='text'
-                  defaultValue={product.countInStock}
-                  readOnly={editable}
-                  className='mr-sm-2 '
-                  id={`countinstock${index}`}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "PRODUCTS_UPDATED",
+                          payload: {
+                            index,
+                            product: {
+                              ...product,
+                              price: e.target.value,
+                            },
+                          },
+                        });
+                      }}
+                    />
+                  </td>
+                  <td>
+                    <FormControl
+                      type='text'
+                      Value={product.countInStock}
+                      readOnly={editable}
+                      className='mr-sm-2 '
+                      id={`countinstock${index}`}
+                      onChange={(e) => {
+                        dispatch({
+                          type: "PRODUCTS_UPDATED",
 
-                      payload: {
-                        index,
-                        product: {
-                          ...product,
-                          countInStock: e.target.value,
-                        },
-                      },
-                    });
-                  }}
-                />
-              </td>
-              <td>
-                <Button
-                  onClick={() => {
-                    removeProduct(product._id);
-                  }}
-                  variant='light'
-                >
-                  Remove
-                </Button>
-              </td>
-            </tr>
-          ))}
+                          payload: {
+                            index,
+                            product: {
+                              ...product,
+                              countInStock: e.target.value,
+                            },
+                          },
+                        });
+                      }}
+                    />
+                  </td>
+                  <td>
+                    <Button
+                      onClick={() => {
+                        removeProduct(product._id);
+                      }}
+                      variant='light'
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </Button>
+                  </td>
+                </tr>
+              ))
+            : search.map((product, index) => (
+                <tr>
+                  <td>
+                    <FormControl
+                      type='text'
+                      Value={product.name}
+                      readOnly={editable}
+                      className='mr-sm-2 '
+                      onChange={(e) => {
+                        dispatch({
+                          type: "PRODUCTS_UPDATED",
+
+                          payload: {
+                            index,
+                            product: {
+                              ...product,
+                              name: e.target.value,
+                            },
+                          },
+                        });
+                      }}
+                    />
+                  </td>
+                  <td>
+                    <Form>
+                      <Form.Group>
+                        <Form.Control
+                          as='select'
+                          defaultValue={product.category}
+                          readOnly={editable}
+                          className='mr-sm-2 '
+                          onChange={(e) => {
+                            dispatch({
+                              type: "PRODUCTS_UPDATED",
+
+                              payload: {
+                                index,
+                                product: {
+                                  ...product,
+                                  category: e.target.value,
+                                },
+                              },
+                            });
+                          }}
+                        >
+                          <option>living_room</option>
+                          <option>kitchen</option>
+                          <option>bedroom</option>
+                        </Form.Control>
+                      </Form.Group>
+                    </Form>
+                  </td>
+                  <td>
+                    <FormControl
+                      type='text'
+                      Value={product.price}
+                      readOnly={editable}
+                      className='mr-sm-2 '
+                      onChange={(e) => {
+                        dispatch({
+                          type: "PRODUCTS_UPDATED",
+
+                          payload: {
+                            index,
+                            product: {
+                              ...product,
+                              price: e.target.value,
+                            },
+                          },
+                        });
+                      }}
+                    />
+                  </td>
+                  <td>
+                    <FormControl
+                      type='text'
+                      defaultValue={product.countInStock}
+                      readOnly={editable}
+                      className='mr-sm-2 '
+                      onChange={(e) => {
+                        dispatch({
+                          type: "PRODUCTS_UPDATED",
+
+                          payload: {
+                            index,
+                            product: {
+                              ...product,
+                              countInStock: e.target.value,
+                            },
+                          },
+                        });
+                      }}
+                    />
+                  </td>
+                  <td>
+                    <Button
+                      onClick={() => {
+                        removeProduct(product._id);
+                      }}
+                      variant='light'
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </Button>
+                  </td>
+                </tr>
+                // <h1>{product.name}</h1>
+              ))}
         </tbody>
       </Table>
 
@@ -264,7 +399,7 @@ const ManagerScreen = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </div>
   );
 };
 

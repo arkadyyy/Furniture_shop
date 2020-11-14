@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../HomeScreen/HomeScreen.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
@@ -28,6 +28,16 @@ const HomeScreen = () => {
   let username = useSelector((state) => state.LoginReducer.userData.username);
   let cartItems = useSelector((state) => state.cartReducer.cartItems);
 
+  let products = useSelector((state) => state.productReducer.products);
+  const [newItems, setnewItems] = useState([]);
+
+  // let twoDaysAgo = new Date();
+  // twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+  // console.log(twoDaysAgo.getDate());
+  // console.log(new Date().getDate());
+  // const newProducts = products.filter((product) => {
+  //   return product.createdAt.getDate() <= twoDaysAgo.getDate();
+  // });
   useEffect(() => {
     disptach(ProductsRequest());
     // window.addEventListener("unload", async (event) => {
@@ -38,9 +48,11 @@ const HomeScreen = () => {
     //   event.returnValue = "";
 
     //   await sendCartToServer(username, cartItems);
+
     // });
   }, []);
 
+  console.log(newItems);
   const sendCartToServer = (username, cartItems) => {
     if (username) {
       Axios.post("/api/setcart", { username, cartItems }).then((res) => {
@@ -50,9 +62,8 @@ const HomeScreen = () => {
   };
 
   return (
-    <div>
+    <div style={{ overflow: "hidden" }}>
       <NavBar />
-
       <div className='heroSection'>
         <div className='heroSectionText'>
           <h1>Best furniture,</h1>
@@ -60,34 +71,65 @@ const HomeScreen = () => {
         </div>
         <div className='heroSectionBackground'></div>
       </div>
-      <Container>
+
+      <Container fluid>
         <div className='newIn'>
-          <div
-            style={{ display: "flex", textAlign: "bottom", padding: "5rem" }}
+          <Row
+            className='justify-content-md-center'
+            style={{ margin: "3rem 0" }}
           >
-            <h1>New In !</h1>
-            <button
-              style={{
-                border: "none",
-                margin: "0 4rem",
-                background: "transparent",
-              }}
-            >
-              see all
-            </button>
-          </div>
-          <Row style={{ position: "relative" }} className='mx-5 my-auto'>
-            {products.map((product) => (
-              <Col>
-                <h1>test</h1>
-              </Col>
-            ))}
+            <Col>
+              <div
+                style={{
+                  display: "flex",
+                  textAlign: "bottom",
+                  padding: "5rem",
+                  alignItems: "left",
+                }}
+              >
+                <h1>New In</h1>
+                <button
+                  style={{
+                    border: "none",
+                    margin: "0 4rem",
+                    background: "transparent",
+                  }}
+                >
+                  see all
+                </button>
+              </div>
+            </Col>
+          </Row>
+          <Row style={{ overflow: "auto" }}>
+            {products
+              .map((product) => {
+                let x = new Date(product.createdAt).getDate();
+                if (x <= new Date().getTime()) {
+                  console.log("created at : ", x);
+                  console.log("today date : ", new Date().getDate());
+
+                  return (
+                    <Col className='mx-auto my-2' sm={12} md={6} lg={3}>
+                      <ProductSmall product={product} />;
+                    </Col>
+                  );
+                } else {
+                  console.log("created at else : ", x);
+                  console.log("today date else : ", new Date().getDate());
+                }
+              })
+              .slice(0, 3)}
           </Row>
         </div>
 
         <div className='insparation'>
           <div
-            style={{ display: "flex", textAlign: "bottom", padding: "5rem" }}
+            style={{
+              display: "flex",
+              textAlign: "bottom",
+              padding: "5rem",
+              overflow: "auto",
+            }}
           >
             <h1>Some Insparation</h1>
             <button

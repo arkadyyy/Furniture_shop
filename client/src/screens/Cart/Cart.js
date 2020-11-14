@@ -13,7 +13,13 @@ const Cart = ({ history }) => {
   return (
     <div>
       <NavBar />
-
+      <Button
+        onClick={() => history.push(history.goBack())}
+        className='btn btn-light'
+        style={{ margin: "4rem 1rem" }}
+      >
+        back
+      </Button>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -28,7 +34,14 @@ const Cart = ({ history }) => {
           {cartItems.map((cartItem, index) => (
             <tr>
               <td>{index + 1}</td>
-              <td>{cartItem.product.name}</td>
+              <td
+                onClick={() =>
+                  history.push(`productscreen/${cartItem.product.name}`)
+                }
+                style={{ cursor: "pointer" }}
+              >
+                {cartItem.product.name}
+              </td>
               <td>
                 {/* <Form.Control as='select' value={cartItem.quantity}>
                   {[...Array(cartItem.quantity).keys()].map((x) => (
@@ -42,13 +55,14 @@ const Cart = ({ history }) => {
 
               <td>{cartItem.product.price * cartItem.quantity}</td>
               <td>
-                <button
+                <Button
+                  variant='light'
                   onClick={() =>
                     dispatch(RemoveItemFromCart(cartItem.product.name))
                   }
                 >
-                  remove
-                </button>
+                  Remove
+                </Button>
               </td>
             </tr>
           ))}
@@ -62,13 +76,14 @@ const Cart = ({ history }) => {
             .reduce((acc, item) => acc + item, 0)}
         </h4>
         <Button
+          className='btn-block'
           onClick={() => {
             !adminLogged && !userLogged
               ? setSmShow(true)
               : history.push("/cartsummary");
           }}
           variant='danger'
-          style={{ margin: " 1rem 0" }}
+          style={{ margin: " 1rem 0", width: "180px", height: "75px" }}
         >
           continue purchese
         </Button>
