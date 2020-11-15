@@ -45,14 +45,6 @@ const LivingRoom = () => {
             Lorem ipsum dolor sit amet,<br></br> consectetur adipiscing elit,
             sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
           </p>
-          <div className='inputHeroSearch'>
-            <label>search by price range</label>
-            <input placeholder='from' />
-            <input placeholder='to' />
-            <Button style={{ margin: "1rem 0" }} variant='danger'>
-              Search
-            </Button>
-          </div>
         </div>
         <div className='heroSectionBackground'></div>
       </div>

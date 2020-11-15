@@ -27,13 +27,14 @@ a {
 }
 .heroSectionText {
   border: 2px white solid;
+  margin-top: 7%;
   color: white;
   text-align: left;
-  padding: 3% 17%;
-  overflow: hidden;
+  padding: 5% 5%;
+  padding-right: 30%;
 
   position: absolute;
-  top: 30%;
+  top: 10%;
   left: 15%;
   z-index: 100;
 }
