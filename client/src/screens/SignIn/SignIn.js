@@ -83,7 +83,7 @@ const SignIn = () => {
               </Button>
             </Form>
           </Col>
-          <Col>test</Col>
+          <Col></Col>
         </Row>
       </Container>
     </>
